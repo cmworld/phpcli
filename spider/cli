@@ -1,0 +1,35 @@
+#!/usr/bin/env php
+<?php
+
+	if (!defined( "APP_NAME" )) {
+		define( "APP_NAME", 'spider');
+	}
+	
+	define('IS_DEBUG',1);
+	define('ENVIRONMENT', 'development');
+
+	$winbase = dirname(__FILE__)."/../classpath.php";
+	require_once($winbase);
+	
+	define( "ROOT_APP_PATH", ROOT_TOP_PATH. "/" . APP_NAME);
+	define( "ROOT_PRO_PATH", ROOT_APP_PATH . "/");
+	define( "ROOT_BIN_PATH", ROOT_APP_PATH . "/");
+
+	switch (ENVIRONMENT)
+	{
+		case 'development':
+			$config = require(ROOT_PRO_PATH."/config/config.php");
+			break;
+		case 'testing':
+			$config = require(ROOT_PRO_PATH."/config/config_testing.php");
+			break;
+		case 'production':
+			$config = require(ROOT_PRO_PATH."/config/config_production.php");
+			break;
+
+		default:
+			exit('The application environment is not set correctly.');
+	}
+	
+	
+	winBase::createConsole($config)->process();
